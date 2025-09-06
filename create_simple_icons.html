@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>生成 Cue 扩展图标</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        .icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 20px 0; }
+        .icon-item { text-align: center; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fafafa; }
+        canvas { border: 2px solid #ccc; border-radius: 5px; }
+        .download-btn { display: block; width: 100%; padding: 8px; margin-top: 10px; background: #1677ff; color: white; text-decoration: none; border-radius: 5px; }
+        .download-btn:hover { background: #0056b3; }
+        .generate-btn { padding: 12px 24px; background: #a61b29; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        .generate-btn:hover { background: #8b1a2a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 生成 Cue 扩展图标</h1>
+        <p>点击下面的按钮生成所有需要的图标文件，然后下载到 cprm 文件夹中。</p>
+        
+        <button class="generate-btn" onclick="generateAllIcons()">🚀 生成所有图标</button>
+        
+        <div class="icon-grid" id="iconGrid"></div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+            <h3>📋 使用说明：</h3>
+            <ol>
+                <li>点击"生成所有图标"按钮</li>
+                <li>下载所有4个PNG文件到 cprm 文件夹</li>
+                <li>刷新浏览器扩展</li>
+                <li>你的自定义图标就会显示在工具栏了！</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // 创建渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#a61b29');
+            gradient.addColorStop(1, '#1677ff');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // 添加白色边框
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = Math.max(1, size / 32);
+            ctx.strokeRect(size/32, size/32, size-size/16, size-size/16);
+            
+            // 添加 "Cue" 文字
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `bold ${size * 0.35}px Arial, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Cue', size/2, size/2);
+            
+            // 添加小装饰点
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            const dotSize = Math.max(1, size / 16);
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.arc(size * 0.2 + i * size * 0.3, size * 0.8, dotSize, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            return canvas;
+        }
+        
+        function generateAllIcons() {
+            const grid = document.getElementById('iconGrid');
+            grid.innerHTML = '';
+            
+            const sizes = [16, 32, 48, 128];
+            
+            sizes.forEach(size => {
+                const canvas = generateIcon(size);
+                
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                
+                const title = document.createElement('h3');
+                title.textContent = `${size}x${size}`;
+                title.style.margin = '0 0 10px 0';
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = canvas.toDataURL('image/png');
+                downloadLink.download = `icon${size}.png`;
+                downloadLink.className = 'download-btn';
+                downloadLink.textContent = `下载 icon${size}.png`;
+                
+                item.appendChild(title);
+                item.appendChild(canvas);
+                item.appendChild(downloadLink);
+                grid.appendChild(item);
+            });
+            
+            // 显示成功消息
+            const successMsg = document.createElement('div');
+            successMsg.style.cssText = 'margin: 20px 0; padding: 15px; background: #d4edda; color: #155724; border-radius: 8px; border: 1px solid #c3e6cb;';
+            successMsg.innerHTML = '✅ <strong>图标生成成功！</strong> 请下载所有4个文件到 cprm 文件夹中。';
+            grid.parentNode.insertBefore(successMsg, grid);
+        }
+    </script>
+</body>
+</html> 

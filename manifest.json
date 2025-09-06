@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Cue",
+  "description": "Cue: Your Magic Wand for AI. Right-side prompt manager with cross-site autofill support for Deepseek, Douban, Kimi and more platforms.",
+  "version": "1.0.0",
+  "default_locale": "zh",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_title": "Cue: Your Magic Wand for AI",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.min.js"
+  },
+  "commands": {
+    "toggle-panel": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P"
+      },
+      "description": "快速打开/关闭右侧面板"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.min.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
+
